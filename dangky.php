@@ -4,17 +4,20 @@ if (!isset($_SESSION)) {
 }
 include("libs/db.php");
 include("sendmail.php");
-if(isset($_POST['register-submit'])){
+if(isset($_SESSION['username'])){
+    header('location:index.php');
+}
+else if(isset($_POST['register-submit'])){
 
     $fullname = htmlspecialchars($_POST['fullname']);
     $username = htmlspecialchars($_POST['username']);
     $email = htmlspecialchars($_POST['email']);
     $phone = htmlspecialchars($_POST['phone']);
-    $password = htmlspecialchars($_POST['fullname']);
+    $password = htmlspecialchars($_POST['password']);
 
     $password = md5(md5($password));
 
-    $sql = "SELECT id, `user_name`, `pass` FROM user where (`user_name` = '$username' or `email` = '$email' or `phone` = '$phone') and `is_block_active_mail` = 0 ";
+    $sql = "SELECT id, `user_name`, `pass` FROM user where `user_name` = '$username' or `email` = '$email' or `phone` = '$phone'";
 
     $result = $conn->query($sql);
       
@@ -32,8 +35,9 @@ if(isset($_POST['register-submit'])){
 
         $result = $conn->query($sql);
           
-        if ($result->num_rows > 0) {
-            
+        if ($result) {
+            // tạo session uername tam
+            $_SESSION['username_tmp']=$username;
             // gửi mã vừa tạo vào email của người dùng (send mail)
             sendMail($email,$code_active);
 
@@ -55,8 +59,6 @@ if(isset($_POST['register-submit'])){
       
     }
     $conn->close();
-
-
 }
 ?>
 <!DOCTYPE html>
@@ -127,7 +129,5 @@ if(isset($_POST['register-submit'])){
     </div>
 </body>
 <?php
-
 ?>
-
 </html>
