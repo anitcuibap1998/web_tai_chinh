@@ -15,7 +15,7 @@ if(isset($_POST['login-submit'])){
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $_SESSION['username']=$row['user_name'];
-
+        $_SESSION['idUser']=$row['id_user'];
         header('location:index.php');
     }else{
         ?>
@@ -40,6 +40,7 @@ if(isset($_POST['login-submit'])){
     <script src="js/login.js"></script>
     <link rel="stylesheet" href="css/login.css">
     <!------ Include the above in your HEAD tag ---------->
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
 </head>
 
 <body>

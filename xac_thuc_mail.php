@@ -1,4 +1,5 @@
 <?php 
+error_reporting(E_ERROR);
     if (!isset($_SESSION)) {
         session_start();
     }
@@ -21,7 +22,7 @@
         if(isset($_POST['active-submit'])){
             // kiem tra so lan kich hoat 
             if($so_lan_kich_hoat<0){
-                //cập nhật trạng thái is_block_active_mail lên bằng fa-rotate-1
+                //cập nhật trạng thái is_block_active_mail lên bằng 1
                 $sql = "UPDATE `user` SET `is_block_active_mail` = 1 WHERE `user_name` = '$username_tmp'";
                 $result = $conn->query($sql);
                 if($result){
@@ -58,7 +59,6 @@
                 }
             }
         }
-
     ?>
     <!DOCTYPE html>
     <html lang="en">
