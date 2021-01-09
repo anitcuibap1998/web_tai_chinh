@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ERROR);
 if (!isset($_SESSION)) {
     session_start();
 }
@@ -19,7 +20,56 @@ include_once("libs/db.php");
     <?php
     include("header.php");
     ?>
+    <?php
+    // xử lý khi đã đăng ký vay (lấy ra hợp đồng vay cuôi cùng của người đó)
+    $id_user = $_SESSION['idUser'];
+    $sql = "SELECT max(id) as idcuoicung , vt.`trang_thai_don_vay` FROM `vay_tien` as vt where vt.`id_user` = '$id_user'";
 
+    $result = $conn->query($sql);
+    
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        if($row['trang_thai_don_vay']==-99){
+            ?>
+            <script>
+                alert("Hồ Sơ Của Bạn Đang Chờ Duyệt ,Bạn cần đóng 250 ngàn phí tạo hồ sơ !!!");
+                window.location="chi_tiet_user.php";
+            </script>
+            <?php
+        }
+        if($row['trang_thai_don_vay']==1 || $row['trang_thai_don_vay']==3)
+        {
+            ?>
+            <script>
+                alert("Hồ Sơ Đang Chờ Duyệt, Hoặc Đang Trong Giai Đoạn Đóng Lãi Nên Không Thể Vay Thêm Nữa Hoặc Bạn Chưa Đóng 250 ngàn Tiền Phí Hồ Sơ !!!");
+                window.location="index.php";
+            </script>
+            <?php
+            
+        }
+    }
+    
+     
+    // xử lý khi nhấn nút submit đang ký form
+     if(isset($_POST['submit'])){
+        $mucVay = htmlspecialchars($_POST['mucVay']);
+        $kyHanVay = htmlspecialchars($_POST['kyHanVay']);
+        $laiXuat = htmlspecialchars($_POST['laiXuat']);
+        $phoneNhanTien = htmlspecialchars($_POST['phoneNhanTien']);
+        $date = date('Y-m-d');
+        $sql = "INSERT INTO `vay_tien`(`id_user`, `muc_vay`, `ky_han_vay`, `phone_momo`, `trang_thai_don_vay`, `ngay_vay_no`) VALUES ('$id_user','$mucVay','$kyHanVay','$phoneNhanTien','-99','$date')";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            ?>
+            <script>
+                alert("Đăng ký Vay Tiền Thành Công Bạn Hãy Nộp Phí 250 ngàn phí tạo hồ sơ và Chờ Đợi Xét Duyệt!!!");
+                window.location="chi_tiet_user.php";
+            </script>
+            <?php
+        }
+     }
+
+    ?>
     <!--content-->
     <section class="section main-banner" id="top" data-section="section1">
         <video autoplay muted loop id="bg-video">
@@ -39,7 +89,7 @@ include_once("libs/db.php");
                     <?php
                 }
                 //get thông tin account lên
-                $username = $_SESSION['username'];
+                $username = isset($_SESSION['username']) ?$_SESSION['username'] : "not";
                 $sql = "SELECT * FROM user where `user_name` = '$username'";
                 // echo $sql;
                 // exit();
@@ -87,7 +137,7 @@ include_once("libs/db.php");
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="mucVay">Mức Vay</label>
-                                        <select class="custom-select" name="mucVay" id="mucVay">
+                                        <select class="custom-select" name="mucVay" id="mucVay" required>
                                             <option value="1" selected>1.000.000 VNĐ</option>
                                             <option value="2">2.000.000 VNĐ</option>
                                             <option value="3">3.000.000 VNĐ</option>
@@ -103,7 +153,7 @@ include_once("libs/db.php");
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="kyHanVay">Gói Kỳ Hạn</label>
-                                        <select class="custom-select" name="kyHanVay" id="kyHanVay" onchange="getValueSelected(this);">
+                                        <select class="custom-select" name="kyHanVay" id="kyHanVay" onchange="getValueSelected(this);" required>
                                             <option value="6 tháng" selected>6 tháng</option>
                                             <option value="12 tháng">12 tháng</option>
                                             <option value="24 tháng">24 tháng</option>
@@ -114,11 +164,11 @@ include_once("libs/db.php");
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="img1">Lãi Suất Mỗi tháng</label>
-                                        <input type="text" class="form-control" name="laiXuat" id="laiXuat" value="2% / tháng" disabled>
+                                        <input type="text" class="form-control" name="laiXuat" id="laiXuat" value="2% / tháng" readonly required>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="img2">Tài Khoản Momo(SĐT)nhận tiền:</label>
-                                        <input type="number" class="form-control" name="phoneNhanTien" id="phoneNhanTien">
+                                        <input type="number" class="form-control" name="phoneNhanTien" id="phoneNhanTien" required>
                                     </div>
                                 </div>
                                 <button type="submit" name="submit" id="submit" class="btn btn-primary">Đăng Ký Vay Tiền</button>

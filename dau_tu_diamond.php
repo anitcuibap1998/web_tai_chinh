@@ -1,5 +1,5 @@
 <?php
-if (!isset($_SESSION)) {
+if(!isset($_SESSION)){
     session_start();
 }
 ?>
@@ -27,8 +27,11 @@ if (!isset($_SESSION)) {
 
         <div class="video-overlay header-text">
             <div class="caption">
-                <h6>Gửi An Toàn</h6>
-                
+                <h6>Đầu Tư Diamond</h6>
+                <!-- <h2><em>Vay Tiền</em> Nhanh</h2>
+                <div class="main-button">
+                    <div class="scroll-to-section"><a href="#section2">Khám phá thêm</a></div>
+                </div> -->
             </div>
         </div>
     </section>

@@ -2,6 +2,10 @@
 if (!isset($_SESSION)) {
     session_start();
 }
+if(!isset($_SESSION['username'])){
+    header('Location:index.php');
+}
+$id_user = $_SESSION['idUser'];
 include_once('libs/db.php');
 ?>
 <!DOCTYPE html>
@@ -102,16 +106,27 @@ include_once('libs/db.php');
                 if ($fullTen == "") {
                     echo '<script> alert("Không được bỏ trông họ và tên!!!");</script>';
                 } else {
-                    $id_user = $_SESSION['idUser'];
+                    
+
                     //cập nhật tất cả thông tin trên vào db
+                    $sql = "INSERT INTO `upload_xac_thuc_2`(`id_user`, `status_active`, `hinh_chup_selfie`, `hinh_mat_truoc_cmnd`, `hinh_mat_sau_cmnd`, `hinh_mat_truoc_bang_lai`, `hinh_mat_sau_bang_lai`, `ho_va_ten_trong_cmnd`) VALUES ('$id_user',1,'$target_file5','$target_file1','$target_file2','$target_file3','$target_file4','$fullTen')";
+                    $result = $conn->query($sql);
+
+                    if ($result) {
+                        //update lai bang user
+                        $sql_update = "UPDATE `user` SET `active2`=1 where `id` = $id_user";
+                        $result = $conn->query($sql_update);
+                       
+                    }
+                    echo '<script> alert("Bạn Đã Tải Lên Thành Công, Vui Lòng Chờ Xét Duyệt Hồ Sơ Xác Thực Danh Tính !!!");</script>';
                 }
-                echo '<script> alert("Bạn Đã Tải Lên Thành Công, Vui Lòng Chờ Xét Duyệt Hồ Sơ Xác Thực Danh Tính !!!");</script>';
             } else {
                 echo '<script> alert("Sự cố mạng dẫn đến upload không thành công, vui lòng thử lại !!!");</script>';
             }
         }
     }
     ?>
+
     <!--content-->
     <!-- ***** Main Banner Area Start ***** -->
     <section class="section main-banner" id="top" data-section="section1">
@@ -121,43 +136,64 @@ include_once('libs/db.php');
 
         <div class="video-overlay header-text" style="bottom:0px;">
             <div class="caption">
-                <form id="form_active_2" action="xac_thuc_cap_2.php" method="POST" enctype="multipart/form-data">
-                    <div class="form-row">
-                        <div class="form-group col-md-12 text-center">
-                            <h4 style="color:antiquewhite">Form xác thực danh tính</h4>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="img1">Ảnh Mặt Trước CMND</label>
-                            <input type="file" class="form-control" name="img1" id="img1" accept="image/x-png,image/jpeg" onchange="validateFileType('img1');" placeholder="Ảnh CMND Mặt Trước" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="img2">Ảnh Mặt Sau CMND</label>
-                            <input type="file" class="form-control" name="img2" id="img2" accept="image/x-png,image/jpeg" onchange="validateFileType('img2');" placeholder="Ảnh CMND Mặt Sau" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="img3">Ảnh Mặt Trước Bằng Lái Xe</label>
-                            <input type="file" class="form-control" name="img3" id="img3" accept="image/x-png,image/jpeg" onchange="validateFileType('img3');" placeholder="Ảnh Bằng Lái Xe Mặt Trước" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="img4">Ảnh Mặt Trước Bằng Lái Xe</label>
-                            <input type="file" class="form-control" name="img4" id="img4" accept="image/x-png,image/jpeg" onchange="validateFileType('img4');" placeholder="Ảnh Mặt Trước Bằng Lái Xe" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="img5">Ảnh Chụp mặt kèm chứng minh nhân dân</label>
-                        <input type="file" class="form-control" name="img5" id="img5" accept="image/x-png,image/jpeg" onchange="validateFileType('img5');" placeholder="Ảnh Chụp mặt kèm chứng minh nhân dân" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="fullName">Họ Và Tên Đầy Đủ(theo CMND ở trên)</label>
-                        <input type="text" class="form-control" name="fullName" id="fullName" placeholder="Họ Và Tên Đầy Đủ" required>
-                    </div>
-                    <button type="submit" name="submit" id="submit" class="btn btn-primary">Xác Thực</button>
-                </form>
+                <?php
+                // get thong tin tu duoi db len
+                $username = $_SESSION['username'];
+                $sql = "SELECT * FROM user where `user_name` = '$username'";
 
+                $result = $conn->query($sql);
+                
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $active2 =  $row['active2'];
+                }
+                if ($active2 == 0 || $active2 == 2) {
+                ?>
+                    <form id="form_active_2" action="xac_thuc_cap_2.php" method="POST" enctype="multipart/form-data">
+                        <div class="form-row">
+                            <div class="form-group col-md-12 text-center">
+                                <h4 style="color:antiquewhite">Form xác thực danh tính</h4>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="img1">Ảnh Mặt Trước CMND</label>
+                                <input type="file" class="form-control" name="img1" id="img1" accept="image/x-png,image/jpeg" onchange="validateFileType('img1');" placeholder="Ảnh CMND Mặt Trước" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="img2">Ảnh Mặt Sau CMND</label>
+                                <input type="file" class="form-control" name="img2" id="img2" accept="image/x-png,image/jpeg" onchange="validateFileType('img2');" placeholder="Ảnh CMND Mặt Sau" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="img3">Ảnh Mặt Trước Bằng Lái Xe</label>
+                                <input type="file" class="form-control" name="img3" id="img3" accept="image/x-png,image/jpeg" onchange="validateFileType('img3');" placeholder="Ảnh Bằng Lái Xe Mặt Trước" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="img4">Ảnh Mặt Sau Bằng Lái Xe</label>
+                                <input type="file" class="form-control" name="img4" id="img4" accept="image/x-png,image/jpeg" onchange="validateFileType('img4');" placeholder="Ảnh Mặt Trước Bằng Lái Xe" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="img5">Ảnh Chụp mặt kèm chứng minh nhân dân</label>
+                                <input type="file" class="form-control" name="img5" id="img5" accept="image/x-png,image/jpeg" onchange="validateFileType('img5');" placeholder="Ảnh Chụp mặt kèm chứng minh nhân dân" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="fullName">Họ Và Tên Đầy Đủ(theo CMND ở trên)</label>
+                                <input type="text" class="form-control" name="fullName" id="fullName" placeholder="Họ Và Tên Đầy Đủ" required>
+                            </div>
+                        </div>
+                        <button type="submit" name="submit" id="submit" class="btn btn-primary">Đăng Ký Xác Thực</button>
+                    </form>
+                <?php
+                }else if ($active2 == 1){
+                    echo'<div class="scroll-to-section"><h2 style="color:antiquewhite">Tài Khoản Này Đang Chờ Duyệt !!!</h2></div>';
+                }else if ($active2 == 3){
+                    echo'<div class="scroll-to-section"><h2 style="color:antiquewhite">Tài Khoản Này Đã Xác Thực Thành Công !!!</h2></div>';
+                }
+                ?>
             </div>
         </div>
     </section>
@@ -188,6 +224,7 @@ include_once('libs/db.php');
         }
     </style>
     <!--footer-->
+
     <?php
     include("footer.php");
     ?>

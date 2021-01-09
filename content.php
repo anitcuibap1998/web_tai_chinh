@@ -87,7 +87,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <h4>Giúp Khách Hàng Vượt Qua Khó Khăn</h4>
-                                    <p>Khách Hàng Hãy Yên Tâm, Dịch Vụ Của Chúng Tôi Sẽ Cố Gắng Duyệt Đơn Của khách Hàng Sớm Nhất Có Thể.<a href="vay_tien.php" target="_parent" rel="sponsored">Vay Ngay</a> Tại Đây</p>
+                                    <p>Khách Hàng Hãy Yên Tâm, Dịch Vụ Của Chúng Tôi Sẽ Cố Gắng Duyệt Đơn Của khách Hàng Sớm Nhất Có Thể. <a href="vay_tien.php" target="_parent" rel="sponsored">Vay Ngay</a> Tại Đây</p>
                                 </div>
                             </div>
                         </article>
@@ -110,8 +110,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <h4>Đội Ngũ Chuyên Nghiệp</h4>
-                                    <p>Mọi Thắc Mắc Các Bạn Có Thể Liên Hệ FanPage
-                                        FanePage<a rel="nofollow" href="#" target="_parent">Vay Tiển</a> Nhanh Để
+                                    <p>Mọi Thắc Mắc Các Bạn Có Thể Liên Hệ
+                                        FanePage <a rel="nofollow" href="#" target="_parent">Vay Tiển</a> Nhanh Để
                                         Được Giải Đáp Nhanh Nhất.</p>
                                 </div>
                             </div>
@@ -129,7 +129,7 @@
             <div class="col-md-7 col-xs-12">
                 <div class="continer centerIt">
                     <div>
-                        <h4>Nhanh Tay <em>Tạo Tài Khoản Thành Công</em> Để Nhận Ngay 10 VNCoin Thưởng.</h4>
+                        <h4>Nhanh Tay <em>Tạo Tài Khoản Thành Công</em> Để Có Thể Trãi Nghiệm Vay Tiền Nhanh Hoặc Gửi Tiết Kiệm Lãi Xuất Cao.</h4>
                         <div class="counter">
 
                             <div class="days">

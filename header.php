@@ -6,20 +6,19 @@
     <nav id="menu" class="main-nav" role="navigation">
         <ul class="main-menu">
             <li><a href="index.php">Trang Chủ</a></li>
-            <li class="has-submenu"><p>Đầu Tư Số</p>
+            <li class="has-submenu"><p>Đầu Tư</p>
                 <ul class="sub-menu">
-                    <li><a href="gui_tiet_kiem_an_toan.php">An Toàn</a></li>
-                    <li><a href="gui_tiet_kiem_trung_binh.php">Trung Bình</a></li>
-                    <li><a href="gui_tiet_kiem_rui_ro.php">Rũi Ro</a></li>
+                    <li><a href="dau_tu_gold.php">Đầu Tư GOLD</a></li>
+                    <li><a href="dau_tu_diamond.php">Đầu Tư DIAMOND</a></li>
                 </ul>
             </li>
             <li><a href="vay_tien.php">Vay Tiền</a></li>
             <?php if(isset($_SESSION['username'])){ ?>
             <li class="has-submenu"><p><i class="fas fa-user"></i> User</p>
                 <ul class="sub-menu">
-                    <li><a href="chi_tiet_user.php">Thông Tin User</a></a></li>
+                    <li><a target="_blank" href="chi_tiet_user.php">Thông Tin User</a></a></li>
                     <li><a href="ql_vay_tien.php">Quản Lý Vay Tiền</a></li>
-                    <li><a href="ql_gui_tiet_kiem.php">Đẩu Tư Số</a></li>
+                    <li><a href="ql_gui_tiet_kiem.php">Quản Lý Đẩu Tư</a></li>
                 </ul>
             </li>
             <?php }?>

@@ -14,8 +14,15 @@ if(isset($_POST['login-submit'])){
     
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $_SESSION['username']=$row['user_name'];
-        $_SESSION['idUser']=$row['id_user'];
+        $_SESSION['username'] = $row['user_name'];
+        $_SESSION['idUser'] = $row['id'];
+        $_SESSION['active1'] = $row['active1'];
+        $_SESSION['active2'] = $row['active2'];
+        // echo  $_SESSION['username'] + "<br>";
+        // echo  $_SESSION['idUser'] + "<br>";
+        // echo  $_SESSION['active1'] + "<br>";
+        // echo  $_SESSION['active2'] + "<br>";
+        // exit();
         header('location:index.php');
     }else{
         ?>
