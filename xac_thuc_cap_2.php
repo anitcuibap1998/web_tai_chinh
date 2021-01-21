@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 if (!isset($_SESSION)) {
     session_start();
 }
@@ -244,6 +245,7 @@ include_once('libs/db.php');
     <script src="assets/js/tabs.js"></script>
     <script src="assets/js/video.js"></script>
     <script src="assets/js/slick-slider.js"></script>
+    <script src="assets/js/custom.js"></script>
 </body>
 
 </html>

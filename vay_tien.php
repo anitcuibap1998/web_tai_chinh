@@ -26,48 +26,47 @@ include_once("libs/db.php");
     $sql = "SELECT max(id) as idcuoicung , vt.`trang_thai_don_vay` FROM `vay_tien` as vt where vt.`id_user` = '$id_user'";
 
     $result = $conn->query($sql);
-    
+
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        if($row['trang_thai_don_vay']==-99){
-            ?>
+        if ($row['trang_thai_don_vay'] == -99) {
+    ?>
             <script>
                 alert("Hồ Sơ Của Bạn Đang Chờ Duyệt ,Bạn cần đóng 250 ngàn phí tạo hồ sơ !!!");
-                window.location="chi_tiet_user.php";
+                window.location = "chi_tiet_user.php";
             </script>
-            <?php
+        <?php
         }
-        if($row['trang_thai_don_vay']==1 || $row['trang_thai_don_vay']==3)
-        {
-            ?>
+        if ($row['trang_thai_don_vay'] == 1 || $row['trang_thai_don_vay'] == 3) {
+        ?>
             <script>
                 alert("Hồ Sơ Đang Chờ Duyệt, Hoặc Đang Trong Giai Đoạn Đóng Lãi Nên Không Thể Vay Thêm Nữa Hoặc Bạn Chưa Đóng 250 ngàn Tiền Phí Hồ Sơ !!!");
-                window.location="index.php";
+                window.location = "index.php";
             </script>
             <?php
-            
+
         }
     }
-    
-     
+
+
     // xử lý khi nhấn nút submit đang ký form
-     if(isset($_POST['submit'])){
+    if (isset($_POST['submit'])) {
         $mucVay = htmlspecialchars($_POST['mucVay']);
         $kyHanVay = htmlspecialchars($_POST['kyHanVay']);
         $laiXuat = htmlspecialchars($_POST['laiXuat']);
         $phoneNhanTien = htmlspecialchars($_POST['phoneNhanTien']);
         $date = date('Y-m-d');
-        $sql = "INSERT INTO `vay_tien`(`id_user`, `muc_vay`, `ky_han_vay`, `phone_momo`, `trang_thai_don_vay`, `ngay_vay_no`) VALUES ('$id_user','$mucVay','$kyHanVay','$phoneNhanTien','-99','$date')";
-        $result = $conn->query($sql);
-        if ($result->num_rows > 0) {
+        $sql = "INSERT INTO `vay_tien`(`id_user`, `muc_vay`, `ky_han_vay`, `phone_momo`, `trang_thai_don_vay`, `ngay_vay_no`,`laixuat`) VALUES ('$id_user','$mucVay','$kyHanVay','$phoneNhanTien','-99','$date','$laiXuat')";
+        // $result = $conn->query($sql);
+        if ($conn->query($sql) === true) {
             ?>
             <script>
                 alert("Đăng ký Vay Tiền Thành Công Bạn Hãy Nộp Phí 250 ngàn phí tạo hồ sơ và Chờ Đợi Xét Duyệt!!!");
-                window.location="chi_tiet_user.php";
+                window.location = "chi_tiet_user.php";
             </script>
-            <?php
+        <?php
         }
-     }
+    }
 
     ?>
     <!--content-->
@@ -80,7 +79,7 @@ include_once("libs/db.php");
             <div class="caption">
                 <h2 id="tieuDeVayTien">Vay Tiền</h2>
                 <?php
-                if (!isset($_SESSION['username'])) { //chưa acctive 2 thì thông báo ra dòng phải active2
+                if (!isset($_SESSION['username'])) { //chưa dang nhap thì thông báo ra dòng phải dang nhap
                 ?>
                     <br>
                     <div class="col-12 container">
@@ -89,7 +88,7 @@ include_once("libs/db.php");
                     <?php
                 }
                 //get thông tin account lên
-                $username = isset($_SESSION['username']) ?$_SESSION['username'] : "not";
+                $username = isset($_SESSION['username']) ? $_SESSION['username'] : "not";
                 $sql = "SELECT * FROM user where `user_name` = '$username'";
                 // echo $sql;
                 // exit();
@@ -193,15 +192,13 @@ include_once("libs/db.php");
                             function getValueSelected(selectObject) {
                                 let value = selectObject.value;
                                 let laiXuat = document.getElementById("laiXuat");
-                                if(value=="6 tháng"){
+                                if (value == "6 tháng") {
                                     laiXuat.value = "2% / tháng";
-                                }else if(value=="12 tháng"){
+                                } else if (value == "12 tháng") {
                                     laiXuat.value = "4% / tháng";
-                                }
-                                else if(value=="24 tháng"){
+                                } else if (value == "24 tháng") {
                                     laiXuat.value = "6% / tháng";
-                                }
-                                else if(value=="36 tháng"){
+                                } else if (value == "36 tháng") {
                                     laiXuat.value = "8% / tháng";
                                 }
                             }

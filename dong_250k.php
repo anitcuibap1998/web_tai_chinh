@@ -7,18 +7,40 @@ if (!isset($_SESSION)) {
 }
 // nếu chưa active 2 thì chuyển về trang chủ 
 if (!isset($_SESSION['username'])) {
-    ?>
-        <script>
-            alert("Bạn Chưa Đăng Nhập!!!");
-            window.location = "login.php";
-        </script>
+?>
+    <script>
+        alert("Bạn Chưa Đăng Nhập!!!");
+        window.location = "login.php";
+    </script>
     <?php
 } else {
+    $idUser = $_SESSION['idUser'];
+    //kiểm tra đã đóng lãi được chấp nhận hay chưa 
+    $sql1 = "SELECT * FROM `phi_tao_ho_so` WHERE `id_user`= '$idUser' and (`trang_thai` = 2 or `trang_thai` = 0) ORDER BY id DESC LIMIT 1";
+    // echo $sql1;
+    // exit();
+    $result = $conn->query($sql1);
+    if ($result->num_rows > 0) {// nếu có thì không cho vào chuyển về trang chủ
+        ?>
+            <script>
+            alert("Bạn Đã Đóng Phí Hồ Sơ Rồi!!!");
+            window.location = "chi_tiet_user.php";
+            </script>
+        <?php
+    }
+
+    $idUser = $_SESSION['idUser'];
+    $sql1 = "SELECT * FROM `vay_tien` WHERE `id_user`= '$idUser' ORDER BY id DESC LIMIT 1";
+    $result = $conn->query($sql1);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $idVayNo = $row['id'];
+        $maHoSoVay = "HSVAY" . $row['id'];
+    }
     //get thông tin account lên
     $username = isset($_SESSION['username']) ? $_SESSION['username'] : "not";
     $sql = "SELECT * FROM user where `user_name` = '$username'";
-    // echo $sql;
-    // exit();
+
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -26,8 +48,8 @@ if (!isset($_SESSION['username'])) {
         $_SESSION['username'] = $row['user_name'];
         $_SESSION['active2'] = $row['active2'];
         $tenDayDu = $row['full_name'];
-        // echo $row['active2'];
-        // exit();
+        // $uer_id = $row['id'];
+
         if ($row['active2'] == 0) { //chưa acctive 2 thì thông báo ra dòng phải active2
     ?>
             <script>
@@ -52,51 +74,37 @@ if (!isset($_SESSION['username'])) {
         }
     }
 }
-    $laiXuat = 3;
-    $loaiDauTu = 1; // 1 là đầu tư gold, 2 là đầu tư kim cương 
-    // Xử Lý Khi Nhấn nút submit
+// $laiXuat = 3;
+// $loaiDauTu = 1; // 1 là đầu tư gold, 2 là đầu tư kim cương 
+// Xử Lý Khi Nhấn nút submit
 if (isset($_POST['submit'])) {
     $phoneGuiTien = htmlspecialchars($_POST['phoneGuiTien']);
-    $mucGui = htmlspecialchars($_POST['mucGui']);
+    // $mucGui = htmlspecialchars($_POST['mucGui']);
     $tenNguoiGui = htmlspecialchars($_POST['tenNguoiGui']);
-    
+
     $maThanhToan = htmlspecialchars($_POST['maThanhToan']);
 
-    $ngayGuiTienDauTu = date("Y-m-d h:i:sa"); // ngày gửi tiền
-    $idUser = $_SESSION['idUser'];
-    //insert vào db 
-    $sql = "INSERT INTO `dau_tu_so`(`phoneGuiTien`, `tenNguoiGui`, `so_tien_dau_tu`, `loai_dau_tu`, `ngay_dau_tu`, `id_user`, `lai_xuat`, `maThanhToan`,`trang_thai`) VALUES ('$phoneGuiTien','$tenNguoiGui','$mucGui','$loaiDauTu','$ngayGuiTienDauTu','$idUser','$laiXuat','$maThanhToan','0')";
-    // $result = $conn->query($sql);
+    $ngayDong250k = date('Y-m-d H:m'); //ngay dong phí 250k
 
-    if ($conn->query($sql) === true) {
-        $id_don_gui_tien = $conn->insert_id;
-        $ngayTraLaiLanDau = date('Y-m-d H:m', strtotime("+30 days"));
-
-        $ngayTraLaiLanTiepTheo = date('Y-m-d H:m', strtotime($ngayTraLaiLanDau ."+30 days"));
-
-        $trangThaiGuiLai=0; // Chưa Gửi Lãi Đang Chờ Đến Ngày gửi lãi
-        //insert vào bảng chi tiết trả lãi cho khách hàng
-        $sql_update_tra_lai = "INSERT INTO `chi_tiet_gui_lai_dau_so`(`id_dau_tu_so`, `ngay_trai_lai`, `ngay_tra_lai_tiep_theo`,  `trang_thai_tra_lai`) VALUES ('$id_don_gui_tien','$ngayTraLaiLanDau','$ngayTraLaiLanTiepTheo','$trangThaiGuiLai')";
-        if ($conn->query($sql_update_tra_lai) === true){
-            ?>
-            <script>
-                alert("Đầu Tư Thành Công Chờ Xét Duyệt!!!");
-            </script>
-            <?php
-        }else{
-            ?>
-            <script>
-                alert("Lỗi Mạng Đăng Ký Không Thành Công!!!");
-            </script>
-            <?php
-        }
-        
-    } else {
+    //thêm vào bảng đóng 250k
+    $sql_dong250k = "INSERT INTO `phi_tao_ho_so`( `id_vay_tien`, `ngay_dong_250k`, `ma_giao_dich`,`phoneDongTien`, `trang_thai`,`id_user`) VALUES ('$idVayNo','$ngayDong250k','$maThanhToan','$phoneGuiTien','0','$idUser')";
+    // $result = $conn->query($sql_dong250k);
+    if ($conn->query($sql_dong250k) === true) {
+        //update trạng thái cho đơn vay là đã đóng và đang chờ Duyệt là trang_thai = 0
+        $sql_update = "UPDATE `vay_tien` SET `trang_thai_don_vay`= 0 WHERE `id` = '$idVayNo'";
+        $conn->query($sql_update);
         ?>
-            <script>
-                alert("Đầu Tư Thất Bại Do Lỗi Mạng!!!");
-            </script>
-        <?php
+        <script>
+            alert("Đóng Phí Thành Công Chờ Xét Duyệt!!!");
+            window.location="chi_tiet_user.php";
+        </script>
+    <?php
+    } else {
+    ?>
+        <script>
+            alert("Lỗi Mạng Đóng Phí Không Thành Công, Mời Bạn Làm Lại!!!");
+        </script>
+<?php
     }
 }
 ?>
@@ -124,10 +132,10 @@ if (isset($_POST['submit'])) {
 
         <div class="video-overlay header-text">
             <div class="caption">
-                <form id="form_active_2" action="dau_tu_gold.php" method="POST" enctype="multipart/form-data">
+                <form id="form_active_2" action="dong_250k.php" method="POST" enctype="multipart/form-data">
                     <div class="form-row">
                         <div class="form-group col-md-12 text-center">
-                            <h4 style="color:antiquewhite">Đầu Tư Gửi Tiền Tiết Kiệm</h4>
+                            <h4 style="color:antiquewhite">Nộp Phí Tạo Hồ Sơ <?php echo ($maHoSoVay != "" ? $maHoSoVay : "Rỗng"); ?></h4>
                         </div>
                     </div>
                     <div class="form-row">
@@ -136,23 +144,8 @@ if (isset($_POST['submit'])) {
                             <input type="number" class="form-control" name="phoneGuiTien" id="phoneGuiTien" min="0" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="kyHanVay">Mức Gửi</label>
-                            <select class="custom-select" name="mucGui" id="mucGui" onchange="getValueSelected(this);" required>
-                                <option value="500000" selected>500.000 Vnđ</option>
-                                <option value="1000000">1.000.000 Vnđ</option>
-                                <option value="2000000">2.000.000 Vnđ</option>
-                                <option value="5000000">5.000.000 Vnđ</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
                             <label for="tenNguoiGui">Tên Người Gửi:</label>
-                            <input type="text" class="form-control" name="tenNguoiGui" id="tenNguoiGui" value="<?php echo isset($tenDayDu)? $tenDayDu:""; ?>" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="laiXuat">Lãi Xuất Gửi:</label>
-                            <input type="text" class="form-control" name="laiXuat" id="laiXuat" value="3%" disabled required>
+                            <input type="text" class="form-control" name="tenNguoiGui" id="tenNguoiGui" value="<?php echo isset($tenDayDu) ? $tenDayDu : ""; ?>" required>
                         </div>
                     </div>
                     <div class="form-row">
@@ -162,11 +155,11 @@ if (isset($_POST['submit'])) {
                         </div>
                         <div class="form-group col-md-6">
                             <label for="qrMoMo">QR Gửi Tiền Tiết Kiệm:</label>
-                            <img src="momo/momo500k.png" alt="500k momo" width="40%" id="qrMoMo" name="qrMoMo">
+                            <img src="momo/momo250k.png" alt="500k momo" width="40%" id="qrMoMo" name="qrMoMo">
                         </div>
                     </div>
 
-                    <button type="submit" name="submit" id="submit" class="btn btn-primary">Xác Nhận Đã Gửi Tiền</button>
+                    <button type="submit" name="submit" id="submit" class="btn btn-primary">Xác Nhận Đã Nộp Phí</button>
                 </form>
             </div>
         </div>
@@ -184,21 +177,7 @@ if (isset($_POST['submit'])) {
                 color: whitesmoke;
             }
         </style>
-        <script>
-            function getValueSelected(selectObject) {
-                let value = selectObject.value;
-                let qrMoMo = document.getElementById("qrMoMo");
-                if (value == 500000) {
-                    qrMoMo.src = "momo/momo500k.png";
-                } else if (value == 1000000) {
-                    qrMoMo.src = "momo/momo1tr.png";
-                } else if (value == 2000000) {
-                    qrMoMo.src = "momo/momo2tr.png";
-                } else if (value == 5000000) {
-                    qrMoMo.src = "momo/momo5tr.png";
-                }
-            }
-        </script>
+
     </section>
     <!--end content-->
 

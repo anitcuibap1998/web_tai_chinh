@@ -1,4 +1,5 @@
 <?php
+	error_reporting(E_ERROR);
 	$host='localhost';
 	$user='root';
 	$pass='';
