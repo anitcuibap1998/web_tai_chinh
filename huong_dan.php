@@ -29,7 +29,7 @@ if (!isset($_SESSION)) {
             <div class="caption" style="text-align: left !important;">
                 <h6 style="color:#3b7dd8;">Hướng dẫn sử dụng trang Web</h6><br><br>
                 <h6>Bước 1: Đăng ký tài khoản và xác thực gmail, hay còn gọi là xác thực bước 1.</h6><br>
-                <h6>Bước 2: Đăng ký tài khoản và xác thực danh tính, Hay còn gọi là xác thực bước 2, bắt buộc trước khi vay tiền hay đầu tư người dùng phải xác thực thành công bước 2.</h6><br>
+                <h6>Bước 2: Sau khi xác thực bước 1 Bạn sẽ phải xác thực danh tính, Hay còn gọi là xác thực bước 2, bắt buộc trước khi vay tiền hay đầu tư người dùng phải xác thực thành công bước 2.</h6><br>
                 <h6>Bước 3: Sau Khi xác thực thành công bước 2, người dùng có thể đăng ký vay tiền hoặc đầu tư lấy lãi (thường quá trình duyệt đơn là từ 30 phút đến 3 ngày tùy vào mức vay và hồ sơ cá nhân) </h6><br>
                 <h6>Hồ sơ vay của quý khách sẽ được uy duyệt nhanh nhất có thể.</h6><br>
                 <h6>Đối với đầu tư thì khách hàng sẽ nhận lại về mỗi tháng(có thể trễ tối đa 3 ngày do phát sinh quá nhiều giao dịch trong hệ thống)</h6><br>
