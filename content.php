@@ -129,7 +129,7 @@
             <div class="col-md-7 col-xs-12">
                 <div class="continer centerIt">
                     <div>
-                        <h4>Nhanh Tay <em>Tạo Tài Khoản Thành Công</em> Để Có Thể Trãi Nghiệm Vay Tiền Nhanh Hoặc Gửi Tiết Kiệm Lãi Xuất Cao.</h4>
+                        <h4>Nhanh Tay <em>Tạo Tài Khoản Thành Công</em> Để Có Thể Trãi Nghiệm Vay Tiền Nhanh Hoặc Gửi Tiết Kiệm Lãi Suất Cao.</h4>
                         <div class="counter">
 
                             <div class="days">

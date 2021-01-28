@@ -17,15 +17,16 @@ if (isset($_POST['dangnhap'])) {
 
     $result = $conn->query($sql);
 
-    if ($result) {
+    if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $_SESSION['username'] =  $username ;
         $_SESSION['roleAdmin'] = 99;
+        $_SESSION['full_name'] = $row['full_name'];
         header('location:index.php');
     } else {
 ?>
         <script>
-            alert("Đăng Nhập Không Thành Công, Tài Khoản Không Tồn Tại Hoặc Đã Bị Block !!!")
+            alert("Đăng Nhập Không Thành Công. !!!")
         </script>
 <?php
     }

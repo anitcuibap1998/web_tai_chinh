@@ -13,12 +13,12 @@
                 </ul>
             </li>
             <li><a href="vay_tien.php">Vay Tiền</a></li>
+            <li><a href="huong_dan.php">Hướng Dẫn</a></li>
             <?php if(isset($_SESSION['username'])){ ?>
             <li class="has-submenu"><p><i class="fas fa-user"></i> User</p>
                 <ul class="sub-menu">
                     <li><a target="_blank" href="chi_tiet_user.php">Thông Tin User</a></a></li>
-                    <li><a href="ql_vay_tien.php">Quản Lý Vay Tiền</a></li>
-                    <li><a href="ql_gui_tiet_kiem.php">Quản Lý Đẩu Tư</a></li>
+                    
                 </ul>
             </li>
             <?php }?>
@@ -27,7 +27,7 @@
             <li><a href="login.php" class="external">Đăng Nhập</a></li>
             <?php }?>
             <?php if(isset($_SESSION['username'])){ ?>
-                <li><a href="logout.php" class="external">Đăng Xuất</a></li>
+                <li><a href="logout.php" class="external">Đăng Suất</a></li>
             <?php }?>
         </ul>
     </nav>

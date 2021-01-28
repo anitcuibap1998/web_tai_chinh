@@ -253,7 +253,7 @@ if ($result->num_rows > 0) {
                   </div>
                 </div>
                 <!-- Address -->
-                <h6 class="heading-small text-muted mb-4" style="color: #DE3163 !important;;">Quản Lý Hồ Sơ Gửi Tiết Kiệm</h6>
+                <h6 class="heading-small text-muted mb-4" style="color: #DE3163 !important;">Quản Lý Hồ Sơ Gửi Tiết Kiệm</h6>
                 <div class="pl-lg-4">
                   <table id="tblGuiTietKiem" class="display">
                     <thead>
@@ -264,7 +264,7 @@ if ($result->num_rows > 0) {
                         <th>Số Tiền Đầu Tư</th>
                         <th>Loại Đầu Tư</th>
                         <th>Ngày Đầu Tư</th>
-                        <th>Lãi Xuất</th>
+                        <th>Lãi Suất</th>
                         <th>Mã Thanh Toán</th>
                         <th>Trạng Thái Hồ Sơ</th>
                         <th>Action</th>
@@ -286,7 +286,7 @@ if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
                       ?>
                           <tr>
-                            <th><?php echo "HSVAY" . $row['id']; ?></th>
+                            <th><?php echo "HSDAUTU" . $row['id']; ?></th>
                             <th><?php echo $row['tenNguoiGui']; ?></th>
                             <th><?php echo $row['phoneGuiTien']; ?></th>
                             <th><?php echo $row['so_tien_dau_tu']; ?></th>
@@ -312,7 +312,7 @@ if ($result->num_rows > 0) {
                                   echo 'Gửi Tiết Kiệm Thành Công';
                                 }
                                 ?></th>
-                            <th><button type="button" name="" id="" class="btn btn-primary" btn-lg btn-block>Lịch Sử Nhận Lãi</button></th>
+                            <th><button type="button" name="" id="" class="btn btn-primary" btn-lg btn-block><a style="color:#fff" href="chi_tiet_lich_nhan_lai.php?maHSDauTu=<?php echo $row['id'];?>">Lịch Sử Nhận Lãi</a></button></th>
                           </tr>
                       <?php
                         }
@@ -332,7 +332,7 @@ if ($result->num_rows > 0) {
                         <th>Số MoMo Nhận</th>
                         <th>Mức Vay</th>
                         <th>Kỳ Hạn Vay</th>
-                        <th>Lãi Xuất</th>
+                        <th>Lãi Suất</th>
                         <th>Ngày Vay Nợ</th>
                         <th>Lý Do Bị Hủy</th>
                         <th>Trạng Thái Đơn</th>
@@ -362,8 +362,16 @@ if ($result->num_rows > 0) {
                             <th><?php echo $row['ky_han_vay']; ?></th>
                             <th><?php echo $row['laixuat']; ?></th>
                             <th><?php echo $row['ngay_vay_no']; ?></th>
-                            <th><?php echo $row['ly_do_bi_huy'] == 0 ? "Chưa Có" : $row['ly_do_bi_huy'];
-                                ?></th>
+                            <th>
+                            <?php if($row['ly_do_bi_huy']=="0"){
+                              echo "Chưa Có Lý Do";
+                            } else{
+                              echo $row['ly_do_bi_huy'];
+                            }
+                                
+                                ?>
+                                
+                                </th>
                             <th><?php
                                 if ($row['trang_thai_don_vay'] == 0) {
                                   echo 'Đang Chờ Xét Duyệt';
@@ -383,6 +391,61 @@ if ($result->num_rows > 0) {
 
                                 ?></th>
                             <th><button type="button" name="lichDongLai" id="lichDongLai" class="btn btn-primary" btn-lg btn-block>Lịch Đóng Lãi</button></th>
+                          </tr>
+                      <?php
+                        }
+                      } ?>
+                    </tbody>
+                  </table>
+                </div>
+                <h6 class="heading-small text-muted mb-4" style="color: #DE3163 !important;">Quản Lý Hồ Sơ Đóng 250k</h6>
+                <div class="pl-lg-4">
+                  <table id="tblDongLai250k" class="display">
+                    <thead>
+                      <tr>
+                      <th>Mã Đóng 250k</th>
+                                <th>Mã Hồ Sơ Vay</th>
+                                <th>Ngày Đóng 250k</th>
+                                <th>Mã Giao Dịch</th>
+                                <th>Phone Đóng Tiền</th>
+                                <th>Trạng Thái</th>
+                                <th>Id User</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                      //get danh sách gửi tiền lên
+                      // Câu SQL lấy danh sách
+                      $sql = "SELECT * FROM `phi_tao_ho_so` where `id_user` = $id_user";
+                      // Thực thi câu truy vấn và gán vào $result
+                      $result = $conn->query($sql);
+
+                      // Kiểm tra số lượng record trả về có lơn hơn 0
+                      // Nếu lớn hơn tức là có kết quả, ngược lại sẽ không có kết quả
+                      if ($result->num_rows > 0) {
+                        // Sử dụng vòng lặp while để lặp kết quả
+                        while ($row = $result->fetch_assoc()) {
+                      ?>
+                          <tr>
+                            <th><?php echo "HS250K" . $row['id']; ?></th>
+                            <th><?php echo "HSVAY" .$row['id_vay_tien']; ?></th>
+                                        <th><?php echo $row['ngay_dong_250k']; ?></th>
+                                        <th><?php echo $row['ma_giao_dich']; ?></th>
+                                        <th><?php echo $row['phoneDongTien']; ?></th>
+                                        <th><?php
+
+                                            if ($row['trang_thai'] == 0) {
+                                                echo "Đang Chờ Xác Thực";
+                                            } else if ($row['trang_thai'] == 1){
+                                                echo "Bị Hủy";
+                                            }
+                                            else if ($row['trang_thai'] == 2){
+                                                echo "Thành Công";
+                                            }
+
+                                            ?></th>
+                                        <th><?php echo $row['id_user']; ?></th>
+                            
                           </tr>
                       <?php
                         }
@@ -415,6 +478,9 @@ if ($result->num_rows > 0) {
         responsive: true
       });
       $('#tblVayVon').DataTable({
+        responsive: true
+      });
+      $('#tblDongLai250k').DataTable({
         responsive: true
       });
 

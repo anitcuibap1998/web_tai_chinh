@@ -11,8 +11,8 @@ use PHPMailer\PHPMailer\Exception;
 
 function sendMail($mailNhan='anitcuibap1998@gmail.com',$maKichHoat){
     $mail = new PHPMailer(true); 
-    $mailGui = 'teamdeveloper01.nettimes@gmail.com';
-    $password_mail = 'minhan3042';                             // Passing `true` enables exceptions
+    $mailGui = 'vaynhanhvn365@gmail.com';
+    $password_mail = 'Tudoi47246@';                               // Passing `true` enables exceptions
     try {
         //Server settings
         $mail->SMTPDebug = 0;                                 // Enable verbose debug output
@@ -44,8 +44,8 @@ function sendMail($mailNhan='anitcuibap1998@gmail.com',$maKichHoat){
 }
 function sendMailReSetPass($mailNhan='anitcuibap1998@gmail.com',$maKichHoat){
     $mail = new PHPMailer(true); 
-    $mailGui = 'teamdeveloper01.nettimes@gmail.com';
-    $password_mail = 'minhan3042';                             // Passing `true` enables exceptions
+    $mailGui = 'vaynhanhvn365@gmail.com';
+    $password_mail = 'Tudoi47246@';                             // Passing `true` enables exceptions
     try {
         //Server settings
         $mail->SMTPDebug = 0;                                 // Enable verbose debug output

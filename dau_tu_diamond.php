@@ -65,7 +65,7 @@ if (isset($_POST['submit'])) {
     $ngayGuiTienDauTu = date("Y-m-d h:i:sa"); // ngày gửi tiền
     $idUser = $_SESSION['idUser'];
     //insert vào db 
-    $sql = "INSERT INTO `dau_tu_so`(`phoneGuiTien`, `tenNguoiGui`, `so_tien_dau_tu`, `loai_dau_tu`, `ngay_dau_tu`, `id_user`, `lai_xuat`, `maThanhToan`,`trang_thai`) VALUES ('$phoneGuiTien','$tenNguoiGui','$mucGui','$loaiDauTu','$ngayGuiTienDauTu','$idUser','$laiXuat','$maThanhToan','0')";
+    $sql = "INSERT INTO `dau_tu_so`(`phoneGuiTien`, `tenNguoiGui`, `so_tien_dau_tu`, `loai_dau_tu`, `ngay_dau_tu`, `id_user`, `lai_xuat`, `maThanhToan`,`trang_thai`) VALUES ('$phoneGuiTien','$tenNguoiGui','$mucGui','2','$ngayGuiTienDauTu','$idUser','$laiXuat','$maThanhToan','0')";
     // $result = $conn->query($sql);
 
     if ($conn->query($sql) === true) {
@@ -75,12 +75,17 @@ if (isset($_POST['submit'])) {
         $ngayTraLaiLanTiepTheo = date('Y-m-d H:m', strtotime($ngayTraLaiLanDau ."+30 days"));
 
         $trangThaiGuiLai=0; // Chưa Gửi Lãi Đang Chờ Đến Ngày gửi lãi
+
+        $tien_lai = $mucGui * (3/100);
+
         //insert vào bảng chi tiết trả lãi cho khách hàng
-        $sql_update_tra_lai = "INSERT INTO `chi_tiet_gui_lai_dau_so`(`id_dau_tu_so`, `ngay_trai_lai`, `ngay_tra_lai_tiep_theo`,  `trang_thai_tra_lai`) VALUES ('$id_don_gui_tien','$ngayTraLaiLanDau','$ngayTraLaiLanTiepTheo','$trangThaiGuiLai')";
+        $sql_update_tra_lai = "INSERT INTO `chi_tiet_gui_lai_dau_so`(`id_dau_tu_so`, `ngay_trai_lai`, `ngay_tra_lai_tiep_theo`,  `trang_thai_tra_lai`,`so_tien_phai_gui`) VALUES ('$id_don_gui_tien','$ngayTraLaiLanDau','$ngayTraLaiLanTiepTheo','$trangThaiGuiLai','$tien_lai')";
         if ($conn->query($sql_update_tra_lai) === true){
             ?>
             <script>
                 alert("Đầu Tư Thành Công Chờ Xét Duyệt!!!");
+
+                window.location="chi_tiet_user.php";
             </script>
             <?php
         }else{
@@ -124,7 +129,7 @@ if (isset($_POST['submit'])) {
 
         <div class="video-overlay header-text">
             <div class="caption">
-                <form id="form_active_2" action="dau_tu_gold.php" method="POST" enctype="multipart/form-data">
+                <form id="form_active_2" action="dau_tu_diamond.php" method="POST" enctype="multipart/form-data">
                     <div class="form-row">
                         <div class="form-group col-md-12 text-center">
                             <h4 style="color:antiquewhite">Đầu Tư Gửi Tiền Tiết Kiệm</h4>
@@ -150,8 +155,8 @@ if (isset($_POST['submit'])) {
                             <input type="text" class="form-control" name="tenNguoiGui" id="tenNguoiGui" value="<?php echo isset($tenDayDu)? $tenDayDu:""; ?>" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="laiXuat">Lãi Xuất Gửi:</label>
-                            <input type="text" class="form-control" name="laiXuat" id="laiXuat" value="3%" disabled required>
+                            <label for="laiXuat">Lãi Suất Gửi:</label>
+                            <input type="text" class="form-control" name="laiXuat" id="laiXuat" value="3% -> 15%" disabled required>
                         </div>
                     </div>
                     <div class="form-row">

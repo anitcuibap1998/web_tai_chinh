@@ -1,2 +1,10 @@
 <?php 
-echo md5(md5(substr(md5(time()), 0, 16)));
+
+$ngayTraLaiLanDau = date('Y-m-d H:m', strtotime("+30 days"));
+
+$ngayTraLaiLanTiepTheo = date('Y-m-d H:m', strtotime($ngayTraLaiLanDau ."+30 days"));
+
+echo $ngayTraLaiLanDau;
+echo '<br>';
+echo $ngayTraLaiLanTiepTheo;
+echo '<br>';

@@ -34,8 +34,8 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
-                    content
+                    <h3>Xin Chào Admin Tú</h3>
+                    <img src="img/hinh-anh-dep-1.jpg" alt="">
                 </div>
                 <!-- /.container-fluid -->
 
@@ -70,10 +70,10 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Chọn "Đăng xuất" bên dưới nếu bạn đã sẵn sàng kết thúc phiên hiện tại của mình.</div>
+                <div class="modal-body">Chọn "Đăng Suất" bên dưới nếu bạn đã sẵn sàng kết thúc phiên hiện tại của mình.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="logout.php">Đăng xuất</a>
+                    <a class="btn btn-primary" href="logout.php">Đăng Suất</a>
                 </div>
             </div>
         </div>
